@@ -36,17 +36,6 @@ const int LCD_COLUMN = 16;
 
 const int TREE_CHAR = 6;
 const int DINO_CHAR = 7;
-//Alfabeto que vai ser alterado, pontuação e menu na tela
-const String ALPHABET[26] = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
-
-boolean isPlaying = false;
-boolean isShowScore = false;
-boolean isDinoOnGround = true;
-
-int currentIndexMenu = 0;
-int score = 0;
-int scoreListSize = 0;
-String scoreList[20];
 
 //Portas de energia, e cada função nomeada
 void setup() {
@@ -183,4 +172,82 @@ void handleGame() {
     score++;
     delay(500);
   }
+}
+//Aparecer o game over na tela
+void handleGameOver () {
+  lcd.clear();
+  lcd.print("GAME OVER");
+
+  lcd.setCursor(0, 1);
+  lcd.print("SCORE: ");
+  lcd.print(score);
+
+  delay(2000);
+  saveScore();
+}
+//Salvar a pontuação 
+void saveScore () {
+  lcd.clear();
+
+  String nick = "";
+  int nameSize = 0;
+  int alphabetCurrentIndex = 0;
+
+  lcd.print("TYPE YOUR NAME");
+
+  while (nameSize != 3) {
+    lcd.setCursor(nameSize, 1);
+    lcd.print(ALPHABET[alphabetCurrentIndex]);
+
+    if (digitalRead(BUTTON_SELECT) == LOW) {
+      alphabetCurrentIndex = alphabetCurrentIndex != 25 ? alphabetCurrentIndex + 1 : 0;
+    }
+
+    if (digitalRead(BUTTON_ENTER) == LOW) {
+      nick += ALPHABET[alphabetCurrentIndex];
+
+      nameSize++;
+      alphabetCurrentIndex = 0;
+    }
+
+    delay(300);
+  }
+
+  scoreList[scoreListSize] =  nick + " " + score;
+  scoreListSize++;
+
+  isPlaying = false;
+  score = 0;
+}
+//Fazer a árvore aparecer, e definir a posição 
+void showTree (int position) {
+  lcd.setCursor(position, 1);
+  lcd.write(TREE_CHAR);
+
+  // clean the previous position
+  lcd.setCursor(position + 1, 1);
+  lcd.print(" ");
+}
+//Definir a posição do dinossauro
+void defineDinoPosition () {
+  int buttonState = digitalRead(BUTTON_ENTER);
+  buttonState == HIGH ? putDinoOnGround() : putDinoOnAir();
+}
+//Criar a função do dinossauro no chão
+void putDinoOnGround () {
+  lcd.setCursor(1, 1);
+  lcd.write(DINO_CHAR);
+  lcd.setCursor(1, 0);
+  lcd.print(" ");
+
+  isDinoOnGround = true;
+}
+//Definir a função de pulo do dinossauro
+void putDinoOnAir () {
+  lcd.setCursor(1, 0);
+  lcd.write(DINO_CHAR);
+  lcd.setCursor(1, 1);
+  lcd.print(" ");
+
+  isDinoOnGround = false;
 }
