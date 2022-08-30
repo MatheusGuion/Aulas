@@ -28,18 +28,20 @@ byte tree [8]
   B01110
 };
 //Funções que foi dado os nomes, tanto o dino e as árvores
-const int BUTTON_ENTER = 8;
-const int BUTTON_SELECT = 9;
+const int BUTTON_A = 2;
+const int BUTTON_B = 3;
+const int BUTTON_C = 4;
+const int BUTTON_D = 5;
 
-const int MENU_SIZE = 2;
-const int LCD_COLUMN = 16;
+const int MENU_SIZE = 4;
+const int LCD_COLUMN = 20;
 
 const int TREE_CHAR = 6;
 const int DINO_CHAR = 7;
 
 //Portas de energia, e cada função nomeada
 void setup() {
-  lcd.begin(16, 2);
+  lcd.begin(20, 2);
   lcd.createChar(DINO_CHAR, dino);
   lcd.createChar(TREE_CHAR, tree);
 
@@ -250,4 +252,4 @@ void putDinoOnAir () {
   lcd.print(" ");
 
   isDinoOnGround = false;
-}
+}   
