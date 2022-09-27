@@ -15,5 +15,15 @@ void loop(){
   char Button = Serial.read();
   switch(Button){  
   case '1':
-  
+  digitalWrite(Button_A, HIGH);
+  digitalWrite(Button_B, LOW);
+  digitalWrite(Button_C, LOW);
+  digitalWrite(Button_D, LOW);
+  break;
+
+  case '2';
+  digitalWrite(Button_A, LOW);
+  digitalWrite(Button_B, HIGH);
+  digitalWrite(Button_C, LOW);
+  digitalWrite(Button_D, LOW);
 }
